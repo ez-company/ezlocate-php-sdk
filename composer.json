@@ -1,7 +1,7 @@
 {
     "name": "ezlocate/ezlocate-php-sdk",
     "description": "PHP SDK for EZ Locate API v1",
-    "homepage": "https://github.com/ezcompany/ezlocate-php-sdk",
+    "homepage": "https://github.com/ez-company/ezlocate-php-sdk",
     "license": "MIT",
     "keywords": [
         "php", "class", "ezlocate", "ezlocate.us", "address", "danger", "skip"
