@@ -1,0 +1,25 @@
+{
+    "name": "ezlocate/ezlocate-php-sdk",
+    "description": "PHP SDK for EZ Locate API v1",
+    "homepage": "https://github.com/ezcompany/ezlocate-php-sdk",
+    "license": "MIT",
+    "keywords": [
+        "php", "class", "ezlocate", "ezlocate.us", "address", "danger", "skip"
+    ],
+    "authors": [
+        {
+            "name": "Jovanni Lo",
+            "email": "lodev09@gmail.com"
+        }
+    ],
+    "require": {
+        "php": ">=5.4",
+        "php-curl-class/php-curl-class": "*",
+        "lodev09/php-util": "*"
+    },
+    "autoload": {
+        "psr-4": {
+            "EZLocate\\": "src/"
+        }
+    }
+}
