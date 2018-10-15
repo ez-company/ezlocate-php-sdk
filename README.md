@@ -19,11 +19,11 @@ const EZL_ACCESS_TOKEN = 'YOUR_EZL_ACCESS_TOKEN';
 $ezl = new EZLocate(EZL_USERNAME, EZL_ACCESS_TOKEN);
 
 $data = [
-	'person' => [
-		'firstname' => 'John',
-		'lastname' => 'Doe',
-		'ssn' => 'XXXX'
-	]
+    'person' => [
+        'firstname' => 'John',
+        'lastname' => 'Doe',
+        'ssn' => 'XXXX'
+    ]
 ];
 
 $order = $ezl->createOrder($data);
