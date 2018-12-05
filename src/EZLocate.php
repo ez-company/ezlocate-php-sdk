@@ -7,7 +7,7 @@ use \Common\Util;
 
 class EZLocate {
 
-    const API_URL = 'http://localhost/ezlocate/api';
+    const API_URL = 'https://ezlocate.app/api';
 
     private $_curl;
 
