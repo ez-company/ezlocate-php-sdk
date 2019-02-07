@@ -19,9 +19,9 @@ const EZL_ACCESS_TOKEN = 'YOUR_EZL_ACCESS_TOKEN';
 $ezl = new EZLocate(EZL_USERNAME, EZL_ACCESS_TOKEN);
 
 $data = [
-	'notes' => 'My order notes',
-	'ref' => 'XXXX',
-	'ref_2' => 'YYYY',
+    'notes' => 'My order notes',
+    'ref' => 'XXXX',
+    'ref_2' => 'YYYY',
     'person' => [
         'firstname' => 'John',
         'lastname' => 'Doe',
