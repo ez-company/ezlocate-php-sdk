@@ -9,6 +9,8 @@ class Order {
 
 	public function __construct($data) {
 		$this->id = Util::get('id', $data);
+		$this->ref = Util::get('ref', $data);
+		$this->ref_2 = Util::get('ref_2', $data);
 		$this->notes = Util::get('notes', $data);
 		$this->created_at = Util::get('created_at', $data);
 		$this->completed_at = Util::get('completed_at', $data);
