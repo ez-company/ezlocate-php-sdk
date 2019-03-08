@@ -12,6 +12,7 @@ class OrderEntity {
 		$this->id = Util::get('id', $data);
 		$this->type = Util::get('type', $data);
 		$this->properties = Util::get('properties', $data);
+		$this->attributes = Util::get('attributes', $data);
 		$this->addons = Util::get('addons', $data);
     }
 
