@@ -7,15 +7,15 @@ use \Common\Util;
 
 class EZLocate {
 
-    private $_curl;
-    private $_api_url;
+    public static $curl;
+    public static $api_url;
 
     public function __construct($usernname, $password, $url = 'https://ezlocate.app/api') {
-        $this->_api_url = $url;
+        self::$api_url = $url;
 
-        $this->_curl = new Curl();
-        $this->_curl->setBasicAuthentication($usernname, $password);
-        $this->_curl->setHeader('Content-Type', 'application/json');
+        self::$curl = new Curl();
+        self::$curl->setBasicAuthentication($usernname, $password);
+        self::$curl->setHeader('Content-Type', 'application/json');
     }
 
     /**
@@ -28,10 +28,9 @@ class EZLocate {
      *
      */
     public function createOrder($data) {
-        $response = $this->_curl->post($this->_api_url.'/orders', $data);
-        if ($this->_curl->error) {
-            throw new ProtocolException($response, $this->_curl);
-            return false;
+        $response = self::$curl->post(self::$api_url.'/orders', $data);
+        if (self::$curl->error) {
+            throw new ProtocolException($response, self::$curl);
         } else {
             return new Order($response);
         }
@@ -47,10 +46,9 @@ class EZLocate {
      *
      */
     public function getOrder($id) {
-        $response = $this->_curl->get($this->_api_url.'/orders/'.$id);
-        if ($this->_curl->error) {
-            throw new ProtocolException($response, $this->_curl);
-            return false;
+        $response = self::$curl->get(self::$api_url.'/orders/'.$id);
+        if (self::$curl->error) {
+            throw new ProtocolException($response, self::$curl);
         } else {
             return new Order($response);
         }
@@ -63,10 +61,9 @@ class EZLocate {
      *
      */
     public function getOrders($params = []) {
-        $response = $this->_curl->get($this->_api_url.'/orders', $params);
-        if ($this->_curl->error) {
-            throw new ProtocolException($response, $this->_curl);
-            return false;
+        $response = self::$curl->get(self::$api_url.'/orders', $params);
+        if (self::$curl->error) {
+            throw new ProtocolException($response, self::$curl);
         } else {
             $orders = [];
             foreach ($response as $order_data) {
@@ -75,5 +72,10 @@ class EZLocate {
 
             return $orders;
         }
+    }
+
+    public function orders($id) {
+        $order = new Order(['id' => $id]);
+        return $order;
     }
 }
