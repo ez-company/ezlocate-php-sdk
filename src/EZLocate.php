@@ -60,8 +60,8 @@ class EZLocate {
      * @return array
      *
      */
-    public function getOrders($params = []) {
-        $response = self::$curl->get(self::$api_url.'/orders', $params);
+    public function getOrders($params = [], $page = 1) {
+        $response = self::$curl->get(self::$api_url.'/orders?page='.$page, $params);
         if (self::$curl->error) {
             throw new ProtocolException($response, self::$curl);
         } else {
