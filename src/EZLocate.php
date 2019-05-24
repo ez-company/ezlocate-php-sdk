@@ -6,6 +6,11 @@ use \Curl\Curl;
 use \Common\Util;
 
 class EZLocate {
+    const PRODUCT_ADDRESS_CLEANSING = 'address-cleansing';
+    const PRODUCT_PEOPLE_FINDING = 'people-finding';
+    const PRODUCT_ASSET_LOCATION = 'asset-location';
+
+    const SERVICE_ADDRESS_VERIFICATION = 1;
 
     public static $curl;
     public static $api_url;
@@ -16,6 +21,42 @@ class EZLocate {
         self::$curl = new Curl();
         self::$curl->setBasicAuthentication($usernname, $password);
         self::$curl->setHeader('Content-Type', 'application/json');
+    }
+
+    /**
+     * Create a batch
+     *
+     * @param @file source file
+     * @param $mapping field mapping data
+     *
+     * @return Batch
+     *
+     */
+    public function createBatch($file, $product = self::PRODUCT_ADDRESS_CLEANSING, $service = self::SERVICE_ADDRESS_VERIFICATION, $mapping = null) {
+        self::$curl->setHeader('Content-Type', 'multipart/form-data');
+
+        $data = [
+            'file' => new \CURLFile($file),
+            'mapping' => $mapping,
+            'product' => $product
+        ];
+
+        switch ($product) {
+            case self::PRODUCT_ADDRESS_CLEANSING:
+                $data['addons'] = is_array($service) ? $service : [$service];
+                break;
+            case self::PRODUCT_PEOPLE_FINDING:
+                $data['method'] = $service;
+                break;
+        }
+
+        $response = self::$curl->post(self::$api_url.'/orders/batches', $data);
+
+        if (self::$curl->error) {
+            throw new ProtocolException($response, self::$curl);
+        } else {
+            return new Batch($response);
+        }
     }
 
     /**
@@ -77,5 +118,34 @@ class EZLocate {
     public function orders($id) {
         $order = new Order(['id' => $id]);
         return $order;
+    }
+
+    /**
+     * Get batches
+     *
+     * @return array
+     *
+     */
+    public function getBatches($params = [], $page = 1) {
+        $response = self::$curl->get(self::$api_url.'/orders/batches?page='.$page, $params);
+        if (self::$curl->error) {
+            throw new ProtocolException($response, self::$curl);
+        } else {
+            $batches = [];
+            foreach ($response as $batch_data) {
+                $batches[] = new Batch($batch_data);
+            }
+
+            return $batches;
+        }
+    }
+
+    public function getBatch($id) {
+        $response = self::$curl->get(self::$api_url.'/orders/batches/'.$id);
+        if (self::$curl->error) {
+            throw new ProtocolException($response, self::$curl);
+        } else {
+            return new Batch($response);
+        }
     }
 }
