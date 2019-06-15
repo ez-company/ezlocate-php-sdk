@@ -6,6 +6,7 @@ use \Curl\Curl;
 use \Common\Util;
 
 class EZLocate {
+    const VERSION = '0.2.2';
     const PRODUCT_ADDRESS_CLEANSING = 'address-cleansing';
     const PRODUCT_PEOPLE_FINDING = 'people-finding';
     const PRODUCT_ASSET_LOCATION = 'asset-location';
@@ -21,6 +22,7 @@ class EZLocate {
         self::$curl = new Curl();
         self::$curl->setBasicAuthentication($usernname, $password);
         self::$curl->setHeader('Content-Type', 'application/json');
+        self::$curl->setUserAgent('EZLocate-PHP/'.self::VERSION.' (https://github.com/ez-company/ezlocate-php-sdk) PHP/'.PHP_VERSION.' Curl/'.curl_version()['version']);
     }
 
     /**
