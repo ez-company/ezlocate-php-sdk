@@ -6,7 +6,7 @@ use \Curl\Curl;
 use \Common\Util;
 
 class EZLocate {
-    const VERSION = '0.2.2';
+    const VERSION = '0.2.3';
     const PRODUCT_ADDRESS_CLEANSING = 'address-cleansing';
     const PRODUCT_PEOPLE_FINDING = 'people-finding';
     const PRODUCT_ASSET_LOCATION = 'asset-location';
