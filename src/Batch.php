@@ -19,7 +19,7 @@ class Batch {
         return $this->completed_at ? true : false;
     }
 
-    public function getItems($params = [], $page = 1) {
+    public function getItems($params = [], $page = 1, &$next_page = null) {
         $response = EZLocate::$curl->get(EZLocate::$api_url.'/orders/batches/'.$this->id.'/items?page='.$page, $params);
         if (EZLocate::$curl->error) {
             throw new ProtocolException($response, EZLocate::$curl);
@@ -28,6 +28,8 @@ class Batch {
             foreach ($response as $item_data) {
                 $items[] = new Order($item_data);
             }
+
+            $next_page = Pagination::nextPage();
 
             return $items;
         }
