@@ -103,7 +103,7 @@ class EZLocate {
      * @return array
      *
      */
-    public function getOrders($params = [], $page = 1) {
+    public function getOrders($params = [], $page = 1, &$next_page = null) {
         $response = self::$curl->get(self::$api_url.'/orders?page='.$page, $params);
         if (self::$curl->error) {
             throw new ProtocolException($response, self::$curl);
@@ -112,6 +112,8 @@ class EZLocate {
             foreach ($response as $order_data) {
                 $orders[] = new Order($order_data);
             }
+
+            $next_page = Pagination::nextPage();
 
             return $orders;
         }
@@ -128,7 +130,7 @@ class EZLocate {
      * @return array
      *
      */
-    public function getBatches($params = [], $page = 1) {
+    public function getBatches($params = [], $page = 1, &$next_page = null) {
         $response = self::$curl->get(self::$api_url.'/orders/batches?page='.$page, $params);
         if (self::$curl->error) {
             throw new ProtocolException($response, self::$curl);
@@ -137,6 +139,8 @@ class EZLocate {
             foreach ($response as $batch_data) {
                 $batches[] = new Batch($batch_data);
             }
+
+            $next_page = Pagination::nextPage();
 
             return $batches;
         }

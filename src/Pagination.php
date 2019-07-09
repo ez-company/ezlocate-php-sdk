@@ -1,13 +1,13 @@
 <?php
 
-namespace EZVenue;
+namespace EZLocate;
 use \Common\Util;
 
 class Pagination {
 	private static function _getPage($direction) {
-		if (empty(EZVenue::$curl->responseHeaders['link'])) return false;
+		if (empty(EZLocate::$curl->responseHeaders['link'])) return false;
 
-		$links = explode(', ', EZVenue::$curl->responseHeaders['link']);
+		$links = explode(', ', EZLocate::$curl->responseHeaders['link']);
 		foreach ($links as $link) {
 			$parts = explode('; ', $link);
 			$url = trim($parts[0], '<>');
