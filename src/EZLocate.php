@@ -146,6 +146,12 @@ class EZLocate {
         }
     }
 
+    /**
+     * Get batch information
+     *
+     * @return Batch
+     *
+     */
     public function getBatch($id) {
         $response = self::$curl->get(self::$api_url.'/orders/batches/'.$id);
         if (self::$curl->error) {

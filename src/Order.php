@@ -22,6 +22,21 @@ class Order {
         }
     }
 
+    /**
+     * Request a report type from the order
+     *
+     * @param $type
+     * @return object
+     */
+    public function requestReport($type) {
+        $response = EZLocate::$curl->post(EZLocate::$api_url.'/orders/'.$this->id.'/reports/'.$type);
+        if (EZLocate::$curl->error) {
+            throw new ProtocolException($response, EZLocate::$curl);
+        } else {
+            return $response;
+        }
+    }
+
     public function getEntities() {
         return $this->_entities;
     }
@@ -30,7 +45,7 @@ class Order {
      * Get address order entity
      *
      * @param $id
-     * @return object
+     * @return OrderEntity
      *
      */
     public function getAddressEntity($id) {
@@ -46,7 +61,7 @@ class Order {
      * Get person order entity
      *
      * @param $id
-     * @return object
+     * @return OrderEntity
      *
      */
     public function getPersonEntity($id) {
