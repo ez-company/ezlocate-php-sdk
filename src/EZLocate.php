@@ -13,16 +13,21 @@ class EZLocate {
 
     const SERVICE_ADDRESS_VERIFICATION = 1;
 
-    public static $curl;
-    public static $api_url;
+    private $_curl;
+    private $_api_url;
 
     public function __construct($usernname, $password, $url = 'https://ezlocate.app/api') {
-        self::$api_url = $url;
+        $this->_api_url = $url;
 
-        self::$curl = new Curl();
-        self::$curl->setBasicAuthentication($usernname, $password);
-        self::$curl->setHeader('Content-Type', 'application/json');
-        self::$curl->setUserAgent('EZLocate-PHP/'.self::VERSION.' (https://github.com/ez-company/ezlocate-php-sdk) PHP/'.PHP_VERSION.' Curl/'.curl_version()['version']);
+        $this->_curl = new Curl();
+        $this->_curl->setBasicAuthentication($usernname, $password);
+        $this->_curl->setHeader('Content-Type', 'application/json');
+        $this->_curl->setUserAgent('EZLocate-PHP/'.self::VERSION.' (https://github.com/ez-company/ezlocate-php-sdk) PHP/'.PHP_VERSION.' Curl/'.curl_version()['version']);
+        $this->setTimeout(300); // 5m
+    }
+
+    public function setTimeout($timeout) {
+        $this->_curl->setTimeout($timeout);
     }
 
     /**
@@ -35,7 +40,7 @@ class EZLocate {
      *
      */
     public function createBatch($file, $product = self::PRODUCT_ADDRESS_CLEANSING, $service = self::SERVICE_ADDRESS_VERIFICATION, $mapping = null) {
-        self::$curl->setHeader('Content-Type', 'multipart/form-data');
+        $this->_curl->setHeader('Content-Type', 'multipart/form-data');
 
         $data = [
             'file' => new \CURLFile($file),
@@ -52,10 +57,10 @@ class EZLocate {
                 break;
         }
 
-        $response = self::$curl->post(self::$api_url.'/orders/batches', $data);
+        $response = $this->_curl->post($this->_api_url.'/orders/batches', $data);
 
-        if (self::$curl->error) {
-            throw new ProtocolException($response, self::$curl);
+        if ($this->_curl->error) {
+            throw new ProtocolException($response, $this->_curl);
         } else {
             return new Batch($response);
         }
@@ -71,9 +76,9 @@ class EZLocate {
      *
      */
     public function createOrder($data) {
-        $response = self::$curl->post(self::$api_url.'/orders', $data);
-        if (self::$curl->error) {
-            throw new ProtocolException($response, self::$curl);
+        $response = $this->_curl->post($this->_api_url.'/orders', $data);
+        if ($this->_curl->error) {
+            throw new ProtocolException($response, $this->_curl);
         } else {
             return new Order($response);
         }
@@ -89,9 +94,9 @@ class EZLocate {
      *
      */
     public function getOrder($id) {
-        $response = self::$curl->get(self::$api_url.'/orders/'.$id);
-        if (self::$curl->error) {
-            throw new ProtocolException($response, self::$curl);
+        $response = $this->_curl->get($this->_api_url.'/orders/'.$id);
+        if ($this->_curl->error) {
+            throw new ProtocolException($response, $this->_curl);
         } else {
             return new Order($response);
         }
@@ -104,9 +109,9 @@ class EZLocate {
      *
      */
     public function getOrders($params = [], $page = 1, &$next_page = null) {
-        $response = self::$curl->get(self::$api_url.'/orders?page='.$page, $params);
-        if (self::$curl->error) {
-            throw new ProtocolException($response, self::$curl);
+        $response = $this->_curl->get($this->_api_url.'/orders?page='.$page, $params);
+        if ($this->_curl->error) {
+            throw new ProtocolException($response, $this->_curl);
         } else {
             $orders = [];
             foreach ($response as $order_data) {
@@ -131,9 +136,9 @@ class EZLocate {
      *
      */
     public function getBatches($params = [], $page = 1, &$next_page = null) {
-        $response = self::$curl->get(self::$api_url.'/orders/batches?page='.$page, $params);
-        if (self::$curl->error) {
-            throw new ProtocolException($response, self::$curl);
+        $response = $this->_curl->get($this->_api_url.'/orders/batches?page='.$page, $params);
+        if ($this->_curl->error) {
+            throw new ProtocolException($response, $this->_curl);
         } else {
             $batches = [];
             foreach ($response as $batch_data) {
@@ -153,9 +158,9 @@ class EZLocate {
      *
      */
     public function getBatch($id) {
-        $response = self::$curl->get(self::$api_url.'/orders/batches/'.$id);
-        if (self::$curl->error) {
-            throw new ProtocolException($response, self::$curl);
+        $response = $this->_curl->get($this->_api_url.'/orders/batches/'.$id);
+        if ($this->_curl->error) {
+            throw new ProtocolException($response, $this->_curl);
         } else {
             return new Batch($response);
         }
