@@ -23,6 +23,7 @@ class EZLocate {
         self::$curl->setBasicAuthentication($usernname, $password);
         self::$curl->setHeader('Content-Type', 'application/json');
         self::$curl->setUserAgent('EZLocate-PHP/'.self::VERSION.' (https://github.com/ez-company/ezlocate-php-sdk) PHP/'.PHP_VERSION.' Curl/'.curl_version()['version']);
+        self::$curl->setTimeout(300); // 5m
     }
 
     /**
