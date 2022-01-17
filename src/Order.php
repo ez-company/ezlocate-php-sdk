@@ -28,8 +28,8 @@ class Order {
      * @param $type
      * @return object
      */
-    public function requestReport($type) {
-        $response = EZLocate::$curl->post(EZLocate::$api_url.'/orders/'.$this->id.'/reports/'.$type);
+    public function requestReport($type, $options = null) {
+        $response = EZLocate::$curl->post(EZLocate::$api_url.'/orders/'.$this->id.'/reports/'.$type, $options);
         if (EZLocate::$curl->error) {
             throw new ProtocolException($response, EZLocate::$curl);
         } else {
